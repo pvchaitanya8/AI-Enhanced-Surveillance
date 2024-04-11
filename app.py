@@ -2,13 +2,13 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 from PIL import Image, ImageTk
 from pymongo import MongoClient
-import face_recognition
-import cv2
+import datetime
 import geocoder
 import webbrowser
-import datetime
 from PIL import Image
 import numpy as np
+import face_recognition
+import cv2
 
 def save_data():
     global data_face
