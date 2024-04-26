@@ -2,13 +2,13 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 from PIL import Image, ImageTk
 from pymongo import MongoClient
-import datetime
-import geocoder
-import webbrowser
-from PIL import Image
-import numpy as np
 import face_recognition
 import cv2
+import geocoder
+import webbrowser
+import datetime
+from PIL import Image
+import numpy as np
 
 def save_data():
     global data_face
@@ -50,6 +50,7 @@ root.geometry("400x80")
 center_window(root)
 
 root.mainloop()
+location_locker = 0
 
 # Connecting to MongoDB
 client = MongoClient('mongodb://localhost:27017')    #Change This MongoClient 
@@ -60,11 +61,12 @@ found_collection = db['found']
 # Finding current location of camera
 g = geocoder.ip('me')
 location_cam = f"{g.latlng[0]:.6f}°N {g.latlng[1]:.6f}°E"
+# location_cam = f"location_ENCRYPTED"
 
 # Function to add a person to the database
 def add_person_window():
     add_window = tk.Toplevel(root)
-    add_window.title("Add a Person")
+    add_window.title("Add profiles of Suspects/ Victims/ Accused")
     add_window.config(bg="#1E1E1E")
     label_fg = "#FFFFFF"
     entry_bg = "#303030"
@@ -80,7 +82,7 @@ def add_person_window():
     name_entry = tk.Entry(add_window, bg=entry_bg, fg=entry_fg)
     name_entry.grid(row=0, column=1, padx=10, pady=5)
 
-    mobile_label = tk.Label(add_window, text="Mobile Number:", bg="#1E1E1E", fg=label_fg)
+    mobile_label = tk.Label(add_window, text="Alert to the Agent:", bg="#1E1E1E", fg=label_fg)
     mobile_label.grid(row=1, column=0, padx=10, pady=5)
 
     mobile_entry = tk.Entry(add_window, bg=entry_bg, fg=entry_fg)
@@ -123,7 +125,11 @@ def add_person(name, mobile_number, other_details, add_window):
 def alert(person_name):
     person = collection.find_one({'name': person_name})
     if person:
-        message = f"{person_name} is at location {location_cam} during {datetime.datetime.now()}"
+        message = ""
+        if location_locker == 1:
+            message = f"{person_name} is found in the media file"
+        else:
+            message = f"{person_name} is at location {location_cam} during {datetime.datetime.now()}"
         number_str = str(person['mobile_number'])
         url = "https://wa.me/+91" + number_str + "?text=" + message
         webbrowser.open(url)
@@ -134,10 +140,13 @@ def alert(person_name):
 def start_search(video_path=None, frame_skip=1):
 
     def recognize_faces():
+        global location_locker
         if video_path:
             video_capture = cv2.VideoCapture(video_path)
+            location_locker = 1 
         else:
             video_capture = cv2.VideoCapture(0)
+            location_locker = 0
 
         notification_window = tk.Toplevel(root)
         notification_window.title("Notifications")
@@ -154,8 +163,8 @@ def start_search(video_path=None, frame_skip=1):
             face_locations = face_recognition.face_locations(frame)
             face_encodings = face_recognition.face_encodings(frame, face_locations)
 
-            mask_alpha = 0.4  
-            mask_color = (34,139,34)  
+            mask_alpha = 0.7  
+            mask_color = (0,0,0)
             mask = np.zeros_like(frame)  
 
             for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
@@ -179,7 +188,7 @@ def start_search(video_path=None, frame_skip=1):
                 mask[top:bottom, left:right] = mask_color
                 frame = cv2.addWeighted(frame, 1, mask, mask_alpha, 0)
 
-                cv2.rectangle(frame, (left, top), (right, bottom), (34,139,34), 2)
+                cv2.rectangle(frame, (left, top), (right, bottom), (0,66,37), 2)
 
                 font = cv2.FONT_HERSHEY_DUPLEX
                 cv2.putText(frame, ", ".join(names) if names else "Unknown", (left + 6, bottom - 6), font, 0.5, (255, 255, 255), 1)
@@ -194,9 +203,12 @@ def start_search(video_path=None, frame_skip=1):
     recognize_faces()
 
 def start_search_from_file():
+    global location_locker
     video_path = filedialog.askopenfilename()
     if video_path:
         start_search(video_path)
+        location_locker = 1
+
 
 def resize_background(event):
     global background_photo
@@ -228,7 +240,7 @@ root.bind("<Configure>", resize_background)
 button_style = ttk.Style()
 button_style.configure("Rounded.TButton", foreground="black", background="green", font=('Helvetica', 14, 'bold'), padding=10, borderwidth=15, relief="groove")
 
-add_button = ttk.Button(root, text="Add a Person", style="Rounded.TButton", command=add_person_window)
+add_button = ttk.Button(root, text="Add profiles of Suspects/ Victims/ Accused", style="Rounded.TButton", command=add_person_window)
 add_button.place(relx=0.5, rely=0.4, anchor="center")
 
 status_label = tk.Label(root, text="")
