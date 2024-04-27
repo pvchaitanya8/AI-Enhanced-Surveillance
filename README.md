@@ -31,20 +31,22 @@ To initiate utilization of the AI-Enhanced Surveillance System, follow these sys
 ## Sample Outputs:
 ### Connecting database:
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/e6ca1dec-7bf0-452f-a0b1-4947ffe620c2)
+
 ### Home page:
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/c777736a-7b28-4be0-931c-c45465bd02ed)
 
 ### Add Person:
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/d749ba3f-c6ca-4c3e-b11f-05c8f725009b)
-
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/19e91fa5-1ed5-4ae4-9e50-813dc16d9a52)
 
 ### Database:
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/8243b19d-4f31-4397-ac78-ec3842f9e7f9)
+
 ### Detecting faces:
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/37dd9ee3-9c2e-4de8-a6b3-637ac8f532ba)
+
 ### Notification Pannel:
 ![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/fb251b36-b7e0-4be9-86ad-3b5135e3ae44)
+![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/93573686/26b45084-719d-44d8-b372-d3544386f35c)
 
-![image](https://github.com/pvchaitanya8/AI_Enhanced_Surveillance/assets/79616131/aef7fc48-1305-4d2d-81ce-8d0a76dec948)
 
